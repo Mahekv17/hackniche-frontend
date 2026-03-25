@@ -11,6 +11,7 @@ import Store from "./pages/Store";
 import SOS from "./pages/SOS";
 import CameraPage from "./pages/Camera";
 import NotFound from "./pages/NotFound";
+import { PWAInstallPrompt } from "./components/PWAInstallPrompt";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
             </Route>
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <PWAInstallPrompt />
         </BrowserRouter>
       </GameStoreProvider>
     </TooltipProvider>
