@@ -6,50 +6,50 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 95%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 10%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 10%;
 
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 110 100% 61%;
-    --primary-foreground: 0 0% 4%;
+    --primary: 94 98% 40%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 16%;
-    --secondary-foreground: 0 0% 85%;
+    --secondary: 87 80% 49%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 0 0% 16%;
-    --muted-foreground: 0 0% 55%;
+    --muted: 0 0% 95%;
+    --muted-foreground: 0 0% 45%;
 
-    --accent: 0 0% 20%;
-    --accent-foreground: 0 0% 95%;
+    --accent: 95 95% 95%;
+    --accent-foreground: 95 95% 20%;
 
-    --destructive: 4 90% 58%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
     --warning: 45 100% 50%;
     --warning-foreground: 0 0% 4%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 110 100% 61%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 94 98% 40%;
 
-    --radius: 1rem;
+    --radius: 1.2rem;
 
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 85%;
-    --sidebar-primary: 110 100% 61%;
-    --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 16%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 110 100% 61%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 20%;
+    --sidebar-primary: 94 98% 40%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 94 98% 94%;
+    --sidebar-accent-foreground: 94 98% 15%;
+    --sidebar-border: 0 0% 92%;
+    --sidebar-ring: 94 98% 40%;
 
-    --glow-primary: 0 0 16px hsla(110, 100%, 61%, 0.25);
-    --glow-primary-strong: 0 0 24px hsla(110, 100%, 61%, 0.4);
+    --glow-primary: 0 0 16px hsla(94, 98%, 40%, 0.15);
+    --glow-primary-strong: 0 0 24px hsla(94, 98%, 40%, 0.25);
   }
 }
 
@@ -76,43 +76,35 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl;
+    @apply bg-white/70 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-sm;
   }
 
   .glass-card-strong {
-    @apply bg-card/70 backdrop-blur-2xl border border-border/40 rounded-2xl;
+    @apply bg-white/80 backdrop-blur-2xl border border-gray-200/80 rounded-2xl shadow-md;
   }
 
   .glow-green {
-    box-shadow: var(--glow-primary);
+    box-shadow: 0 0 16px hsla(94, 98%, 40%, 0.1);
   }
 
   .glow-green-strong {
-    box-shadow: var(--glow-primary-strong);
+    box-shadow: 0 0 24px hsla(94, 98%, 40%, 0.2);
   }
 
   .glow-gold {
-    box-shadow: 0 0 12px hsla(45, 100%, 50%, 0.3), 0 0 24px hsla(45, 100%, 50%, 0.12);
-  }
-
-  .glow-silver {
-    box-shadow: 0 0 12px hsla(0, 0%, 75%, 0.3), 0 0 24px hsla(0, 0%, 75%, 0.12);
-  }
-
-  .glow-bronze {
-    box-shadow: 0 0 12px hsla(30, 80%, 50%, 0.3), 0 0 24px hsla(30, 80%, 50%, 0.12);
+    box-shadow: 0 0 12px hsla(45, 100% , 50%, 0.15), 0 0 24px hsla(45, 100%, 50%, 0.05);
   }
 
   .glow-red {
-    box-shadow: 0 0 16px hsla(4, 90%, 58%, 0.25), 0 0 32px hsla(4, 90%, 58%, 0.12);
+    box-shadow: 0 0 16px hsla(0, 84%, 60% , 0.1), 0 0 32px hsla(0, 84%, 60%, 0.05);
   }
 
   .glow-blue {
-    box-shadow: 0 0 12px hsla(210, 100%, 60%, 0.25), 0 0 24px hsla(210, 100%, 60%, 0.12);
+    box-shadow: 0 0 12px hsla(210, 100%, 60%, 0.1), 0 0 24px hsla(210, 100%, 60%, 0.05);
   }
 
   .text-glow {
-    text-shadow: 0 0 8px hsla(110, 100%, 61%, 0.35);
+    text-shadow: 0 0 8px hsla(94, 98%, 40%, 0.35);
   }
 
   .text-glow-gold {
@@ -134,12 +126,12 @@
 
   0%,
   100% {
-    filter: drop-shadow(0 0 6px hsla(110, 100%, 61%, 0.25));
+    filter: drop-shadow(0 0 6px hsla(94, 98%, 40%, 0.25));
     transform: scale(1);
   }
 
   50% {
-    filter: drop-shadow(0 0 14px hsla(110, 100%, 61%, 0.45));
+    filter: drop-shadow(0 0 14px hsla(94, 98%, 40%, 0.45));
     transform: scale(1.05);
   }
 }
