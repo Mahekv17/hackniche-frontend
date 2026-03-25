@@ -11,19 +11,30 @@ export function PWAInstallPrompt() {
   const [installPrompt, setInstallPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isInstalled, setIsInstalled] = useState(false);
+  const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
     // Check if already installed (standalone mode)
-    if (window.matchMedia("(display-mode: standalone)").matches) {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches 
+      || (window.navigator as any).standalone 
+      || document.referrer.includes('android-app://');
+
+    if (isStandalone) {
       setIsInstalled(true);
       return;
+    }
+
+    // Check localStorage if user dismissed it earlier in this session
+    const dismissed = sessionStorage.getItem("pwa-prompt-dismissed");
+    if (dismissed) {
+      setIsDismissed(true);
     }
 
     const handler = (e: Event) => {
       e.preventDefault();
       setInstallPrompt(e as BeforeInstallPromptEvent);
-      // Show prompt after a short delay so user can see the app first
-      setTimeout(() => setIsVisible(true), 3000);
+      // Show prompt after a short delay
+      setTimeout(() => setIsVisible(true), 2000);
     };
 
     window.addEventListener("beforeinstallprompt", handler);
@@ -41,51 +52,45 @@ export function PWAInstallPrompt() {
     setInstallPrompt(null);
   };
 
-  if (isInstalled) return null;
+  const handleDismiss = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsVisible(false);
+    setIsDismissed(true);
+    sessionStorage.setItem("pwa-prompt-dismissed", "true");
+  };
+
+  if (isInstalled || isDismissed || !isVisible) return null;
 
   return (
     <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          initial={{ y: 100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: 100, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="fixed bottom-24 left-4 right-4 z-50 max-w-sm mx-auto"
-        >
-          <div className="glass-card-strong p-4 flex items-center gap-4 border border-[#58CC02]/30 shadow-lg">
-            {/* Icon */}
-            <div className="w-12 h-12 rounded-2xl bg-[#58CC02]/10 border border-[#58CC02]/20 flex items-center justify-center shrink-0">
-              <span className="text-2xl">🛡️</span>
-            </div>
+      <motion.div
+        initial={{ scale: 0, opacity: 0, y: 20 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0, opacity: 0, y: 20 }}
+        className="fixed bottom-6 right-6 z-[100]"
+      >
+        <div className="relative group">
+          <button
+            onClick={handleInstall}
+            className="w-14 h-14 rounded-full bg-[#58CC02] text-white shadow-lg shadow-[#58CC02]/20 flex items-center justify-center hover:bg-[#4ab501] transition-all active:scale-95 group"
+            title="Install App"
+          >
+            <Download size={24} className="group-hover:translate-y-0.5 transition-transform" />
+          </button>
+          
+          <button
+            onClick={handleDismiss}
+            className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center text-gray-500 hover:text-gray-700 hover:bg-gray-50 transition-colors"
+          >
+            <X size={12} />
+          </button>
 
-            {/* Text */}
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-foreground">Install SafeGuard Pro</p>
-              <p className="text-xs text-muted-foreground mt-0.5">
-                Add to home screen for offline access
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 shrink-0">
-              <button
-                onClick={handleInstall}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#58CC02] text-white text-xs font-bold hover:bg-[#4ab501] transition-colors"
-              >
-                <Download size={12} />
-                Install
-              </button>
-              <button
-                onClick={() => setIsVisible(false)}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-muted-foreground hover:bg-muted transition-colors"
-              >
-                <X size={14} />
-              </button>
-            </div>
+          {/* Tooltip hint */}
+          <div className="absolute right-full mr-3 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded-lg bg-gray-900 text-white text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none shadow-xl">
+            Install App
           </div>
-        </motion.div>
-      )}
+        </div>
+      </motion.div>
     </AnimatePresence>
   );
 }

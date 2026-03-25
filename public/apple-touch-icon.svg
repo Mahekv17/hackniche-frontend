@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="180" height="180" viewBox="0 0 180 180">
-  <rect width="180" height="180" rx="27" fill="#58CC02"/>
-  <!-- Shield body -->
-  <path d="M90 39.599999999999994 L129.6 64.8 L129.6 100.8 Q129.6 136.8 90 140.4 Q50.4 136.8 50.4 100.8 L50.4 64.8 Z" fill="white"/>
-  <!-- Checkmark -->
-  <polyline points="72,93.6 88.2,109.8 113.4,73.8" fill="none" stroke="#58CC02" stroke-width="11.700000000000001" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
