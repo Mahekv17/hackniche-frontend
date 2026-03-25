@@ -1,106 +1,167 @@
-import { Trophy, TrendingUp, TrendingDown, Minus, Star } from "lucide-react";
+import { Trophy, TrendingUp, TrendingDown, Minus, Star, Crown, Medal } from "lucide-react";
+import { motion } from "framer-motion";
+import { useGameStore } from "@/hooks/useGameStore";
 
-const workers = [
+const baseWorkers = [
   { rank: 1, name: "Marcus Chen", points: 14250, trend: "up", avatar: "MC" },
   { rank: 2, name: "Sarah Kim", points: 13800, trend: "up", avatar: "SK" },
   { rank: 3, name: "James Okoro", points: 12900, trend: "down", avatar: "JO" },
-  { rank: 4, name: "You (Op. 042)", points: 12450, trend: "up", avatar: "42", isUser: true },
   { rank: 5, name: "Lisa Patel", points: 11200, trend: "flat", avatar: "LP" },
   { rank: 6, name: "David Ruiz", points: 10850, trend: "down", avatar: "DR" },
   { rank: 7, name: "Anna Volkov", points: 9300, trend: "up", avatar: "AV" },
   { rank: 8, name: "Tom Wright", points: 8750, trend: "flat", avatar: "TW" },
 ];
 
-const medalColors: Record<number, string> = {
-  1: "from-yellow-400 to-amber-600",
-  2: "from-gray-300 to-gray-500",
-  3: "from-orange-400 to-amber-700",
-};
-
-const medalBorders: Record<number, string> = {
-  1: "border-yellow-500/50",
-  2: "border-gray-400/50",
-  3: "border-orange-500/50",
+const medalStyles: Record<number, { gradient: string; border: string; shimmer: string }> = {
+  1: {
+    gradient: "from-yellow-400 to-amber-600",
+    border: "border-yellow-500/40",
+    shimmer: "animate-gold-shimmer",
+  },
+  2: {
+    gradient: "from-gray-300 to-gray-500",
+    border: "border-gray-400/40",
+    shimmer: "animate-silver-shimmer",
+  },
+  3: {
+    gradient: "from-orange-400 to-amber-700",
+    border: "border-orange-500/40",
+    shimmer: "animate-bronze-shimmer",
+  },
 };
 
 const TrendIcon = ({ trend }: { trend: string }) => {
-  if (trend === "up") return <TrendingUp className="w-3.5 h-3.5 text-primary" />;
-  if (trend === "down") return <TrendingDown className="w-3.5 h-3.5 text-destructive" />;
-  return <Minus className="w-3.5 h-3.5 text-muted-foreground" />;
+  if (trend === "up") return <TrendingUp className="w-4 h-4 md:w-4 md:h-4 text-primary" />;
+  if (trend === "down") return <TrendingDown className="w-4 h-4 md:w-4 md:h-4 text-destructive/70" />;
+  return <Minus className="w-4 h-4 md:w-4 md:h-4 text-muted-foreground" />;
 };
 
 const Leaderboard = () => {
-  return (
-    <div className="px-4 py-4 space-y-4">
-      {/* Header */}
-      <div className="glass-card p-4 text-center">
-        <Trophy className="w-8 h-8 text-warning mx-auto mb-2" />
-        <h2 className="font-display text-sm font-bold tracking-wider text-foreground">SHIFT LEADERBOARD</h2>
-        <p className="text-[10px] text-muted-foreground font-mono mt-1">REAL-TIME RANKINGS • SECTOR 7</p>
-      </div>
+  const { points } = useGameStore();
 
-      {/* User Points */}
-      <div className="glass-card p-4 border-primary/30 flex items-center justify-between">
-        <div>
-          <p className="text-[10px] font-display tracking-wider text-muted-foreground">YOUR POINTS</p>
-          <p className="font-display text-2xl font-bold text-primary text-glow">12,450</p>
-        </div>
-        <div className="text-right">
-          <p className="text-[10px] font-display tracking-wider text-muted-foreground">RANK</p>
-          <p className="font-display text-2xl font-bold text-foreground">#4</p>
-        </div>
-        <div className="flex items-center gap-1 px-2 py-1 rounded-full bg-primary/15 border border-primary/30">
-          <TrendingUp className="w-3 h-3 text-primary" />
-          <span className="text-[10px] font-mono text-primary">+850 TODAY</span>
-        </div>
+  const workers = [
+    ...baseWorkers.filter((w) => w.rank < 4),
+    { rank: 4, name: "You (Op. 042)", points, trend: "up", avatar: "42", isUser: true },
+    ...baseWorkers.filter((w) => w.rank >= 5),
+  ].sort((a, b) => b.points - a.points).map((w, i) => ({ ...w, rank: i + 1 }));
+
+  const currentUser = workers.find((w) => "isUser" in w && w.isUser);
+
+  return (
+    <div className="px-4 md:px-6 py-4 md:py-6 space-y-5 md:space-y-6">
+      {/* Header + User Summary */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+        <motion.div
+          className="glass-card p-6 md:p-7 text-center relative overflow-hidden"
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 200 }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-warning/3 to-transparent pointer-events-none" />
+          <Crown className="w-10 h-10 md:w-12 md:h-12 text-warning mx-auto mb-2 relative z-10" />
+          <h2 className="font-display text-lg md:text-xl text-foreground relative z-10">Leaderboard 🏆</h2>
+          <p className="text-xs md:text-sm text-muted-foreground mt-1 relative z-10">Live rankings · Sector 7</p>
+        </motion.div>
+
+        <motion.div
+          className="glass-card p-5 md:p-7 border-primary/20 flex items-center justify-between"
+          initial={{ opacity: 0, y: -15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: "spring", stiffness: 200, delay: 0.05 }}
+        >
+          <div>
+            <p className="text-xs md:text-sm text-muted-foreground">Your Points</p>
+            <p className="font-display text-3xl md:text-4xl text-primary text-glow">{points.toLocaleString()}</p>
+          </div>
+          <div className="text-right">
+            <p className="text-xs md:text-sm text-muted-foreground">Rank</p>
+            <p className="font-display text-3xl md:text-4xl text-foreground">#{currentUser?.rank || 4}</p>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 md:px-4 md:py-2 rounded-xl bg-primary/10 border border-primary/20">
+            <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary" />
+            <span className="text-xs md:text-sm font-semibold text-primary">Live</span>
+          </div>
+        </motion.div>
       </div>
 
       {/* Rankings */}
       <div>
-        <h3 className="font-display text-xs font-bold tracking-wider text-foreground mb-3 flex items-center gap-2">
-          <Star className="w-4 h-4 text-warning" />
-          TOP WORKERS OF THE SHIFT
+        <h3 className="font-display text-sm md:text-base text-foreground mb-4 flex items-center gap-2">
+          <Star className="w-4 h-4 md:w-5 md:h-5 text-warning" />
+          Top Workers This Shift
         </h3>
-        <div className="space-y-2">
-          {workers.map((worker) => (
-            <div
-              key={worker.rank}
-              className={`glass-card p-3 flex items-center gap-3 transition-colors ${
-                worker.isUser ? "border-primary/40 bg-primary/5" : ""
-              } ${medalBorders[worker.rank] || ""}`}
-            >
-              {/* Rank */}
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-display text-xs font-bold ${
-                medalColors[worker.rank]
-                  ? `bg-gradient-to-br ${medalColors[worker.rank]} text-background`
-                  : "bg-secondary text-muted-foreground"
-              }`}>
-                {worker.rank}
-              </div>
+        <div className="space-y-2.5 md:space-y-0 md:grid md:grid-cols-2 md:gap-3">
+          {workers.map((worker, index) => {
+            const medal = medalStyles[worker.rank];
+            const isUser = "isUser" in worker && worker.isUser;
 
-              {/* Avatar */}
-              <div className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold font-mono ${
-                worker.isUser
-                  ? "bg-primary/20 border border-primary/50 text-primary"
-                  : "bg-secondary text-secondary-foreground"
-              }`}>
-                {worker.avatar}
-              </div>
+            return (
+              <motion.div
+                key={worker.avatar}
+                initial={{ opacity: 0, x: -15 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05, type: "spring", stiffness: 200 }}
+                whileHover={{ y: -1 }}
+                className={`glass-card p-3.5 md:p-4 flex items-center gap-3 transition-all ${isUser ? "border-primary/30 bg-primary/5 md:col-span-2" : ""
+                  } ${medal?.border || ""} ${medal?.shimmer || ""}`}
+              >
+                {/* Rank Badge */}
+                <div
+                  className={`w-9 h-9 md:w-11 md:h-11 rounded-xl flex items-center justify-center font-display text-sm md:text-base shrink-0 ${medal
+                      ? `bg-gradient-to-br ${medal.gradient} text-background`
+                      : "bg-secondary text-muted-foreground"
+                    }`}
+                >
+                  {worker.rank <= 3 ? (
+                    <Medal className="w-4 h-4 md:w-5 md:h-5" />
+                  ) : (
+                    worker.rank
+                  )}
+                </div>
 
-              {/* Info */}
-              <div className="flex-1 min-w-0">
-                <p className={`text-sm font-semibold truncate ${worker.isUser ? "text-primary" : "text-foreground"}`}>
-                  {worker.name}
-                </p>
-                <p className="text-[10px] font-mono text-muted-foreground">{worker.points.toLocaleString()} PTS</p>
-              </div>
+                {/* Avatar */}
+                <div
+                  className={`w-10 h-10 md:w-12 md:h-12 rounded-xl flex items-center justify-center text-xs md:text-sm font-bold font-mono shrink-0 ${isUser
+                      ? "bg-primary/15 border border-primary/30 text-primary"
+                      : "bg-secondary text-secondary-foreground"
+                    }`}
+                >
+                  {worker.avatar}
+                </div>
 
-              {/* Trend */}
-              <TrendIcon trend={worker.trend} />
-            </div>
-          ))}
+                {/* Info */}
+                <div className="flex-1 min-w-0">
+                  <p className={`text-sm md:text-base font-semibold truncate ${isUser ? "text-primary" : "text-foreground"}`}>
+                    {worker.name} {isUser && "⭐"}
+                  </p>
+                  <p className="text-xs md:text-sm text-muted-foreground">
+                    {worker.points.toLocaleString()} pts
+                  </p>
+                </div>
+
+                <TrendIcon trend={worker.trend} />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
+
+      {/* Pinned User */}
+      {currentUser && (
+        <motion.div
+          className="glass-card p-4 md:p-5 border-primary/30 bg-primary/5 flex items-center gap-3 sticky bottom-20 md:bottom-24"
+          whileHover={{ y: -1 }}
+        >
+          <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-primary/15 border border-primary/30 flex items-center justify-center text-sm md:text-base font-bold font-mono text-primary">
+            {currentUser.rank}
+          </div>
+          <div className="flex-1">
+            <p className="text-sm md:text-base font-semibold text-primary">Your Position 📍</p>
+            <p className="text-xs md:text-sm text-muted-foreground">{currentUser.points.toLocaleString()} pts · Rank #{currentUser.rank}</p>
+          </div>
+          <TrendingUp className="w-5 h-5 text-primary" />
+        </motion.div>
+      )}
     </div>
   );
 };

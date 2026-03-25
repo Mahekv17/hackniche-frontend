@@ -2,29 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 4%;
+    --background: 0 0% 7%;
     --foreground: 0 0% 95%;
 
-    --card: 0 0% 10%;
+    --card: 0 0% 12%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 0 0% 8%;
+    --popover: 0 0% 10%;
     --popover-foreground: 0 0% 95%;
 
     --primary: 110 100% 61%;
     --primary-foreground: 0 0% 4%;
 
-    --secondary: 0 0% 14%;
+    --secondary: 0 0% 16%;
     --secondary-foreground: 0 0% 85%;
 
-    --muted: 0 0% 14%;
+    --muted: 0 0% 16%;
     --muted-foreground: 0 0% 55%;
 
-    --accent: 0 0% 18%;
+    --accent: 0 0% 20%;
     --accent-foreground: 0 0% 95%;
 
     --destructive: 4 90% 58%;
@@ -33,23 +33,23 @@
     --warning: 45 100% 50%;
     --warning-foreground: 0 0% 4%;
 
-    --border: 0 0% 18%;
-    --input: 0 0% 18%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
     --ring: 110 100% 61%;
 
-    --radius: 0.75rem;
+    --radius: 1rem;
 
-    --sidebar-background: 0 0% 6%;
+    --sidebar-background: 0 0% 8%;
     --sidebar-foreground: 0 0% 85%;
     --sidebar-primary: 110 100% 61%;
     --sidebar-primary-foreground: 0 0% 4%;
-    --sidebar-accent: 0 0% 14%;
+    --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 18%;
+    --sidebar-border: 0 0% 20%;
     --sidebar-ring: 110 100% 61%;
 
-    --glow-primary: 0 0 20px hsla(110, 100%, 61%, 0.4);
-    --glow-primary-strong: 0 0 30px hsla(110, 100%, 61%, 0.6);
+    --glow-primary: 0 0 16px hsla(110, 100%, 61%, 0.25);
+    --glow-primary-strong: 0 0 24px hsla(110, 100%, 61%, 0.4);
   }
 }
 
@@ -60,11 +60,13 @@
 
   body {
     @apply bg-background text-foreground font-sans antialiased;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Nunito', 'Inter', sans-serif;
+    overflow-x: hidden;
   }
 
   .font-display {
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
   }
 
   .font-mono {
@@ -74,11 +76,11 @@
 
 @layer utilities {
   .glass-card {
-    @apply bg-card/60 backdrop-blur-xl border border-border/50 rounded-xl;
+    @apply bg-card/50 backdrop-blur-xl border border-border/30 rounded-2xl;
   }
 
   .glass-card-strong {
-    @apply bg-card/80 backdrop-blur-2xl border border-border/60 rounded-xl;
+    @apply bg-card/70 backdrop-blur-2xl border border-border/40 rounded-2xl;
   }
 
   .glow-green {
@@ -89,15 +91,143 @@
     box-shadow: var(--glow-primary-strong);
   }
 
+  .glow-gold {
+    box-shadow: 0 0 12px hsla(45, 100%, 50%, 0.3), 0 0 24px hsla(45, 100%, 50%, 0.12);
+  }
+
+  .glow-silver {
+    box-shadow: 0 0 12px hsla(0, 0%, 75%, 0.3), 0 0 24px hsla(0, 0%, 75%, 0.12);
+  }
+
+  .glow-bronze {
+    box-shadow: 0 0 12px hsla(30, 80%, 50%, 0.3), 0 0 24px hsla(30, 80%, 50%, 0.12);
+  }
+
+  .glow-red {
+    box-shadow: 0 0 16px hsla(4, 90%, 58%, 0.25), 0 0 32px hsla(4, 90%, 58%, 0.12);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 12px hsla(210, 100%, 60%, 0.25), 0 0 24px hsla(210, 100%, 60%, 0.12);
+  }
+
   .text-glow {
-    text-shadow: 0 0 10px hsla(110, 100%, 61%, 0.5);
+    text-shadow: 0 0 8px hsla(110, 100%, 61%, 0.35);
+  }
+
+  .text-glow-gold {
+    text-shadow: 0 0 8px hsla(45, 100%, 50%, 0.4);
   }
 
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+}
+
+/* Soft bounce pulse for shield */
+@keyframes shield-pulse {
+
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px hsla(110, 100%, 61%, 0.25));
+    transform: scale(1);
+  }
+
+  50% {
+    filter: drop-shadow(0 0 14px hsla(110, 100%, 61%, 0.45));
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.animate-shield-pulse {
+  animation: shield-pulse 2.5s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3.5s ease-in-out infinite;
+}
+
+/* Gentle medal shimmers */
+@keyframes gold-shimmer {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px hsla(45, 100%, 50%, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 18px hsla(45, 100%, 50%, 0.45), 0 0 30px hsla(45, 100%, 50%, 0.15);
+  }
+}
+
+@keyframes silver-shimmer {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px hsla(0, 0%, 78%, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 15px hsla(0, 0%, 78%, 0.4), 0 0 25px hsla(0, 0%, 78%, 0.12);
+  }
+}
+
+@keyframes bronze-shimmer {
+
+  0%,
+  100% {
+    box-shadow: 0 0 8px hsla(30, 80%, 50%, 0.2);
+  }
+
+  50% {
+    box-shadow: 0 0 15px hsla(30, 80%, 50%, 0.4), 0 0 25px hsla(30, 80%, 50%, 0.12);
+  }
+}
+
+.animate-gold-shimmer {
+  animation: gold-shimmer 2.5s ease-in-out infinite;
+}
+
+.animate-silver-shimmer {
+  animation: silver-shimmer 3s ease-in-out infinite;
+}
+
+.animate-bronze-shimmer {
+  animation: bronze-shimmer 3.5s ease-in-out infinite;
+}
+
+/* Soft pulse for notification dot */
+@keyframes soft-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2s ease-in-out infinite;
 }
