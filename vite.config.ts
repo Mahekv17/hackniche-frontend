@@ -19,7 +19,7 @@ export default defineConfig(({ mode }) => ({
     VitePWA({
       registerType: "autoUpdate",
       injectRegister: "auto",
-      includeAssets: ["favicon.ico", "robots.txt", "*.svg"],
+      includeAssets: ["favicon.ico", "robots.txt", "*.png", "*.svg"],
       manifest: {
         name: "SafeGuard Pro",
         short_name: "SafeGuard",
@@ -33,21 +33,42 @@ export default defineConfig(({ mode }) => ({
         categories: ["productivity", "utilities", "health"],
         icons: [
           {
-            src: "/pwa-192x192.svg",
+            src: "/pwa-72x72.png",
+            sizes: "72x72",
+            type: "image/png",
+          },
+          {
+            src: "/pwa-96x96.png",
+            sizes: "96x96",
+            type: "image/png",
+          },
+          {
+            src: "/pwa-144x144.png",
+            sizes: "144x144",
+            type: "image/png",
+          },
+          {
+            src: "/pwa-192x192.png",
             sizes: "192x192",
-            type: "image/svg+xml",
+            type: "image/png",
             purpose: "any",
           },
           {
-            src: "/pwa-512x512.svg",
+            src: "/pwa-512x512.png",
             sizes: "512x512",
-            type: "image/svg+xml",
+            type: "image/png",
             purpose: "any",
           },
           {
-            src: "/pwa-maskable-192x192.svg",
+            src: "/pwa-maskable-192x192.png",
             sizes: "192x192",
-            type: "image/svg+xml",
+            type: "image/png",
+            purpose: "maskable",
+          },
+          {
+            src: "/pwa-maskable-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
             purpose: "maskable",
           },
         ],
